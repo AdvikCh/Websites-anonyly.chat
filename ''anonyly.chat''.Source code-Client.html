@@ -17,6 +17,7 @@
                 --color-text: #FFF
             }
         }
+
         * {
             font-family: 'Roboto Flex', Arial, Helvetica;
             margin: 0; overflow-x: hidden
@@ -75,6 +76,67 @@
                 right: 11vw; bottom: 2vw; z-index: 11;
                 pointer-events: none
           }
+
+             @media (max-width: 1000px) {
+            * {
+               font-family: 'Roboto Flex', Arial, Helvetica;
+                margin: 0; overflow-x: hidden
+            } * br {
+                display: block; 
+                font-size: 0;
+                margin-bottom: 1vw
+            } * h1 {font-size: 4em; -webkit-text-fill-color: #FF4556; -webkit-text-stroke: 0.1vw var(--color-text)} * h2 {font-size: 4em}
+              * p {font-size: 2.5em; line-height: 1}
+        
+            .header {
+                position: fixed; display: absolute; background: linear-gradient(to right, #F66, #F44);
+                width: 100vw; text-align: center
+            }
+
+            .messages {
+                display: flex;
+                width: 98vw;
+                padding-top: 5em; margin: 0 0 32vw 0; flex-direction: column;
+            } .message-others {
+                display: inline-block; background-color: #C0C0C0;
+                padding: 1vw; border-radius: 2vw;
+                max-width: 60vw;
+                font-size: 1.5em; color: var(--color-text); text-align: left;
+                margin: 1vw 0 0 1vw; align-self: flex-start;
+              } .message-yours {
+                display: inline-block; background-color: #FF4556;
+                max-width: 60vw; border-radius: 2vw;
+                font-size: 1.5em; text-align: right;
+                padding: 1vw; margin: 1vw 1vw 0 0; align-self: flex-end
+              }
+
+            .message {
+                display: flex; position: fixed; background: linear-gradient(to right, #F66, #F44);
+                width: 96vw; border-radius: 2vw;
+                gap: 1vw; padding: 1vw 1vw; margin: 0 0 1vw 1vw; justify-content: space-between; align-items: center; left: 0; bottom: 0; z-index: 10;
+            } .message-input {
+                resize: none; overflow-y: auto;
+                width: 85vw; height: 25vw;
+                background-color: var(--color-background); border: none; border-radius: 2vw;
+                font-size: 5vw; color: var(--color-text); font-style: italic;
+                padding: 1vw
+              } .message-input::placeholder {color: #C0C0C0}
+              .send-button {
+                  display: flex; background-color: #000;
+                  width: 10vw; height: 10vw; border-radius: 50%;
+                  font-size: 8vw; color: #FFF;
+                  justify-content: center; align-items: center;
+                  cursor: pointer; transition: 0.5s background-color ease, 0.5s color ease;
+              } .send-button:hover {
+                  background-color: #FFF;
+                  color: #000;
+                } .character-counter {
+                    position: absolute;
+                    font-size: 1em; color: #C0C0C0;
+                    right: 14vw; bottom: 2vw; z-index: 11;
+                    pointer-events: none
+              }
+        }
     </style>
 </head>
 
@@ -127,6 +189,8 @@
             messages_container.appendChild(message_div)
         } )
     }
+    // messages = [{"message": "Hello!", "ID": 12, "life": 5}, {"message": "Is any one online rn?", "ID": 12, "life": 5}, {"message": "yea", "ID": SESSION_ID, "life": 5}, {"message": "bol", "ID": SESSION_ID, "life": 5}, {"message": "''This is a super long sentence just intended to take some space''", "ID": 12, "life": 5}, {"message": "Bhai this message will be an even longer message than before, as it has more to discuss about -- such as: This message itself, how it refers to itself, meta-meta-meta, your message, and so much more (etcetera)", "ID": SESSION_ID, "life": 5}, {"message": "Nice", "ID": 12, "life": 5}, {"message": "Nic", "ID": 12, "life": 5}, {"message": "thxu", "ID": SESSION_ID, "life": 5}, {"message": "bkl", "ID": SESSION_ID, "life": 5}, {"message": "Hello!", "ID": 12, "life": 5}, {"message": "Is any one online rn?", "ID": 12, "life": 5}, {"message": "yea", "ID": SESSION_ID, "life": 5}, {"message": "bol", "ID": SESSION_ID, "life": 5}, {"message": "''This is a super long sentence just intended to take some space''", "ID": 12, "life": 5}, {"message": "Bhai this message will be an even longer message than before, as it has more to discuss about -- such as: This message itself, how it refers to itself, meta-meta-meta, your message, and so much more (etcetera)", "ID": SESSION_ID, "life": 5}, {"message": "Nice", "ID": 12, "life": 5}, {"message": "Nic", "ID": 12, "life": 5}, {"message": "thxu", "ID": SESSION_ID, "life": 5}, {"message": "bkl", "ID": SESSION_ID, "life": 5}]
+    // render_messages(messages)
 </script>
 
 </html>

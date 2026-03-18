@@ -11,13 +11,14 @@ async def updater():
             if message["life"] > 1: message["life"] -= 1
             else: messages.remove(message)
         for client in list(clients):
-            try: await client.send_message(messages) # Yes.. this is unoptimal, and sends all messages for every new message written, but, is unoptimal in the scale of KB -- most network speeds are fine with this level of wastage; This is a TODO
+            try: await client.send_message(json.dumps(messages)) # Yes.. this is unoptimal, and sends all messages for every new message written, but, is unoptimal in the scale of KB -- most network speeds are fine with this level of wastage; This is a TODO
             except ConnectionClosed: clients.discard(client)
         await trio.sleep(1)
 
 async def reciever(request):
-    if request.headers.get("origin") != "https://projects.advikchaudhary.com": await request.reject(403); return
-    web_socket = await request.accept(); clients.add(web_socket); web_socket.send_message(messages)
+    request_headers = dict(request.headers)
+    if request_headers.get("origin", "").rstrip("/").rstrip("/anonyly-chat") != "https://projects.advikchaudhary.com" and request_headers.get("Origin", "").rstrip("/").rstrip("/anonyly-chat") != "https://projects.advikchaudhary.com" and request_headers.get("ORIGIN", "").rstrip("/").rstrip("/anonyly-chat") != "https://projects.advikchaudhary.com": await request.reject(403); return
+    web_socket = await request.accept(); clients.add(web_socket); web_socket.send_message(json.dumps(messages))
     try:
         while True:
             data = await web_socket.get_message()
