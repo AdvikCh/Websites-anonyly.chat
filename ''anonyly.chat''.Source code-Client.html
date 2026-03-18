@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anonyly Chat</title>
+    <link rel="icon" href="https://advikchaudhary.com/Images/.''projects''/#Websites-Logos/Anonyly-chat.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap">
+    <style>
+        :root {
+            --color-background: #FFF;
+            --color-text: #000;
+        } @media (prefers-color-scheme: dark) {
+            :root {
+                --color-background: #0C0C0C;
+                --color-text: #FFF
+            }
+        }
+        * {
+            font-family: 'Roboto Flex', Arial, Helvetica;
+            margin: 0; overflow-x: hidden
+        } * br {
+              display: block; 
+              font-size: 0;
+              margin-bottom: 1vw
+        } * h1 {font-size: 6em; -webkit-text-fill-color: #FF4556; -webkit-text-stroke: 0.1vw var(--color-text)} * h2 {font-size: 4em}
+          * p {font-size: 2.5em; line-height: 1}
+        
+        .header {
+            position: fixed; display: absolute; background: linear-gradient(to right, #F66, #F44);
+            width: 100vw; text-align: center
+        }
+
+        .messages {
+            display: flex;
+            width: 98vw;
+            padding-top: 8em; margin: 0 0 14vw 0vw; flex-direction: column;
+        } .message-others {
+            display: inline-block; background-color: #C0C0C0;
+            padding: 1vw; border-radius: 2vw;
+            max-width: 60vw;
+            font-size: 1.5em; color: var(--color-text); text-align: left;
+            margin: 1vw 0 0 1vw; align-self: flex-start;
+          } .message-yours {
+            display: inline-block; background-color: #FF4556;
+            max-width: 60vw; border-radius: 2vw;
+            font-size: 1.5em; text-align: right;
+            padding: 1vw; margin: 1vw 1vw 0 0; align-self: flex-end
+          }
+
+        .message {
+            display: flex; position: fixed; background: linear-gradient(to right, #F66, #F44);
+            width: 96vw; border-radius: 2vw;
+            gap: 1vw; padding: 1vw 1vw; margin: 0 0 1vw 1vw; justify-content: space-between; align-items: center; left: 0; bottom: 0; z-index: 10;
+        } .message-input {
+            resize: none; overflow-y: auto;
+            width: 86vw; height: 6vw;
+            background-color: var(--color-background); border: none; border-radius: 2vw;
+            font-size: 2vw; color: var(--color-text); font-style: italic;
+            padding: 1vw
+          } .message-input::placeholder {color: #C0C0C0}
+          .send-button {
+              display: flex; background-color: #000;
+              width: 5vw; height: 5vw; border-radius: 50%;
+              font-size: 4vw; color: #FFF;
+              justify-content: center; align-items: center;
+              cursor: pointer; transition: 0.5s background-color ease, 0.5s color ease;
+          } .send-button:hover {
+              background-color: #FFF;
+              color: #000;
+            } .character-counter {
+                position: absolute;
+                font-size: 1em; color: #C0C0C0;
+                right: 11vw; bottom: 2vw; z-index: 11;
+                pointer-events: none
+          }
+    </style>
+</head>
+
+<body style="background-color: var(--color-background);">
+    <div class="header"><h1>ANONYLY CHAT</h1></div>
+<main>
+    <div class="messages" id="messages"></div>
+
+    <div class="message">
+        <textarea class="message-input" id="message_input" rows="1" placeholder="Message..." maxlength="1024"></textarea>
+        <div id="character_counter" class="character-counter">0/1024</div>
+        <div class="send-button" id="send_button">➜</div>
+    </div>
+</main>
+</body>
+<script>
+    const SESSION_ID = Math.floor(Math.random() * 100000);
+    const SERVER = new WebSocket("wss://websites-anonyly-chat.onrender.com");
+    const NOTIFICATION_AUDIO = new Audio("Assets/Notification.mp3");
+    var messages = []
+
+    message_input.addEventListener("input", () => {document.getElementById("character_counter").textContent = `${message_input.value.length}/1024`;});
+    document.getElementById("message_input").addEventListener("keydown", (event) => {if (event.key === "Enter" && !event.shiftKey) {event.preventDefault(); document.getElementById("send_button").click();}});
+    document.getElementById("send_button").onclick = () => {
+        let message_input = document.getElementById("message_input");
+        
+        if (message_input.value.trim() === "") return;
+
+        let message = {message: message_input.value, ID: SESSION_ID};
+        SERVER.send(JSON.stringify(message)); message_input.value = "";
+        send_button.style.pointerEvents = "none"; send_button.style.opacity = "0.5";
+        setTimeout(() => {send_button.style.pointerEvents = "auto"; send_button.style.opacity = "1";}, 1000);
+    };
+
+    SERVER.onmessage = (event) => {
+        updated_messages = JSON.parse(event.data)
+        if (updated_messages[updated_messages.length-1].ID !== SESSION_ID) {
+            if (messages.length >= 1) {if (updated_messages[updated_messages.length-1].message !== messages[messages.length-1].message) {NOTIFICATION_AUDIO.play().catch(() => console.log("Audio blocked: Notification failed"))}}
+            else {NOTIFICATION_AUDIO.play().catch(() => console.log("Audio blocked: Notification failed"))}
+        }
+        messages = updated_messages
+        render_messages(messages)
+    };
+    function render_messages(messages) { 
+        const messages_container = document.getElementById("messages");
+        messages_container.innerHTML = '';
+        messages.forEach(message => {
+            let message_div = document.createElement("div");
+            message_div.className = (message.ID === SESSION_ID) ? "message-yours" : "message-others"; message_div.textContent = message.message;
+            messages_container.appendChild(message_div)
+        } )
+    }
+</script>
+
+</html>
