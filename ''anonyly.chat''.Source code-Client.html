@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<!DOCTYPE html><html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,12 +7,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap">
     <style>
         :root {
-            --color-background: #FFF;
-            --color-text: #000;
+            --color-background: #FFFFFF;
+            --color-text: #000000;
         } @media (prefers-color-scheme: dark) {
             :root {
                 --color-background: #0C0C0C;
-                --color-text: #FFF
+                --color-text: #FFFFFF
             }
         }
 
@@ -29,7 +27,7 @@
           * p {font-size: 2.5em; line-height: 1}
         
         .header {
-            position: fixed; display: absolute; background: linear-gradient(to right, #F66, #F44);
+            position: fixed; display: absolute; background: linear-gradient(to right, #FF6666, #FF4444);
             width: 100vw; text-align: center
         }
 
@@ -48,36 +46,49 @@
             max-width: 60vw; border-radius: 2vw;
             font-size: 1.5em; text-align: right;
             padding: 1vw; margin: 1vw 1vw 0 0; align-self: flex-end
-          }
+          } .message-others img, .message-yours img {
+              display: block; border-radius: 1vw;
+              width: 58vw; height: auto;
+            }
 
         .message {
-            display: flex; position: fixed; background: linear-gradient(to right, #F66, #F44);
+            display: flex; position: fixed; background: linear-gradient(to right, #FF6666, #F44F44);
             width: 96vw; border-radius: 2vw;
-            gap: 1vw; padding: 1vw 1vw; margin: 0 0 1vw 1vw; justify-content: space-between; align-items: center; left: 0; bottom: 0; z-index: 10;
-        } .message-input {
+            gap: 1vw; padding: 1vw 1vw; margin: 0 0 1vw 1vw; align-items: center; left: 0; bottom: 0; z-index: 10;
+        } .text-input {
             resize: none; overflow-y: auto;
-            width: 86vw; height: 6vw;
+            width: 90vw; height: 6vw;
             background-color: var(--color-background); border: none; border-radius: 2vw;
             font-size: 2vw; color: var(--color-text); font-style: italic;
             padding: 1vw
-          } .message-input::placeholder {color: #C0C0C0}
-          .send-button {
+          } .text-input::placeholder {color: #C0C0C0}
+          .image-input {
+              display: flex; background-color: #000000;
+              width: 6vw; height: 6vw; border-radius: 50%;
+              font-size: 3vw; color: #FFFFFF;
+              justify-content: center; align-items: center;
+              cursor: pointer; transition: 0.5s background-color ease, 0.5s color ease;
+          } .image-input:hover {
+              background-color: #FFFFFF;
+              color: #000000;
+            }
+          .send-message {
               display: flex; background-color: #000;
               width: 5vw; height: 5vw; border-radius: 50%;
               font-size: 4vw; color: #FFF;
               justify-content: center; align-items: center;
               cursor: pointer; transition: 0.5s background-color ease, 0.5s color ease;
-          } .send-button:hover {
-              background-color: #FFF;
-              color: #000;
+          } .send-message:hover {
+              background-color: #FFFFFF;
+              color: #000000;
             } .character-counter {
                 position: absolute;
                 font-size: 1em; color: #C0C0C0;
-                right: 11vw; bottom: 2vw; z-index: 11;
+                right: 8vw; bottom: 2vw; z-index: 11;
                 pointer-events: none
           }
 
-             @media (max-width: 1000px) {
+        @media (orientation: portrait) {
             * {
                font-family: 'Roboto Flex', Arial, Helvetica;
                 margin: 0; overflow-x: hidden
@@ -89,7 +100,7 @@
               * p {font-size: 2.5em; line-height: 1}
         
             .header {
-                position: fixed; display: absolute; background: linear-gradient(to right, #F66, #F44);
+                position: fixed; display: absolute; background: linear-gradient(to right, #FF6666, #FF4444);
                 width: 100vw; text-align: center
             }
 
@@ -111,24 +122,34 @@
               }
 
             .message {
-                display: flex; position: fixed; background: linear-gradient(to right, #F66, #F44);
+                display: flex; position: fixed; background: linear-gradient(to right, #FF6666, #FF4444);
                 width: 96vw; border-radius: 2vw;
-                gap: 1vw; padding: 1vw 1vw; margin: 0 0 1vw 1vw; justify-content: space-between; align-items: center; left: 0; bottom: 0; z-index: 10;
-            } .message-input {
+                gap: 1vw; padding: 1vw 1vw; justify-content: space-between; align-items: center; left: 0; bottom: 0; z-index: 10;
+            } .text-input {
                 resize: none; overflow-y: auto;
                 width: 85vw; height: 25vw;
                 background-color: var(--color-background); border: none; border-radius: 2vw;
                 font-size: 5vw; color: var(--color-text); font-style: italic;
                 padding: 1vw
-              } .message-input::placeholder {color: #C0C0C0}
-              .send-button {
-                  display: flex; background-color: #000;
+              } .text-input::placeholder {color: #C0C0C0}
+              .image-input {
+                  display: flex; background-color: #000000;
+                  width: 10vw; height: 10vw; border-radius: 50%;
+                  font-size: 5vw; color: #FFFFFF;
+                  justify-content: center; align-items: center;
+                  cursor: pointer; transition: 0.5s background-color ease, 0.5s color ease;
+              } .image-input:hover {
+                  background-color: #FFFFFF;
+                  color: #000;
+                }
+              .send-message {
+                  display: flex; background-color: #000000;
                   width: 10vw; height: 10vw; border-radius: 50%;
                   font-size: 8vw; color: #FFF;
                   justify-content: center; align-items: center;
                   cursor: pointer; transition: 0.5s background-color ease, 0.5s color ease;
-              } .send-button:hover {
-                  background-color: #FFF;
+              } .send-message:hover {
+                  background-color: #FFFFFF;
                   color: #000;
                 } .character-counter {
                     position: absolute;
@@ -146,9 +167,10 @@
     <div class="messages" id="messages"></div>
 
     <div class="message">
-        <textarea class="message-input" id="message_input" rows="1" placeholder="Message..." maxlength="1024"></textarea>
-        <div id="character_counter" class="character-counter">0/1024</div>
-        <div class="send-button" id="send_button">➜</div>
+        <input type="file" id="attachment" accept="image/*" style="display: none">
+        <div class="image-input" id="image_input">🖼</div>
+        <textarea class="text-input" id="text_input" rows="1" placeholder="Message..." maxlength="1024"></textarea><div id="character_counter" class="character-counter">0/1024</div>
+        <div class="send-message" id="send_message">➜</div>
     </div>
 </main>
 </body>
@@ -156,41 +178,73 @@
     const SESSION_ID = Math.floor(Math.random() * 100000);
     const SERVER = new WebSocket("wss://websites-anonyly-chat.onrender.com");
     const NOTIFICATION_AUDIO = new Audio("Assets/Notification.mp3");
-    var messages = []
+    var attachment_limit = 1;
 
-    message_input.addEventListener("input", () => {document.getElementById("character_counter").textContent = `${message_input.value.length}/1024`;});
-    document.getElementById("message_input").addEventListener("keydown", (event) => {if (event.key === "Enter" && !event.shiftKey) {event.preventDefault(); document.getElementById("send_button").click();}});
-    document.getElementById("send_button").onclick = () => {
-        let message_input = document.getElementById("message_input");
-        
-        if (message_input.value.trim() === "") return;
+    const text_input = document.getElementById("text_input"); const image_input = document.getElementById("image_input"); const attachment = document.getElementById("attachment"); const send_message = document.getElementById("send_message")
+    var messages = []; var image = {name: "", picture: "", type: ""};
 
-        let message = {message: message_input.value, ID: SESSION_ID};
-        SERVER.send(JSON.stringify(message)); message_input.value = "";
-        send_button.style.pointerEvents = "none"; send_button.style.opacity = "0.5";
-        setTimeout(() => {send_button.style.pointerEvents = "auto"; send_button.style.opacity = "1";}, 1000);
+    text_input.addEventListener("input", () => {document.getElementById("character_counter").textContent = `${text_input.value.length}/1024`});
+    text_input.addEventListener("keydown", (event) => {if (event.key === "Enter" && !event.shiftKey) {event.preventDefault(); send_message.click()}});
+    image_input.onclick = () => {
+        if (attachment_limit === 0) {alert("You can only send 1 attachment per 30 seconds"); return};
+        attachment.click()
+    }
+    attachment.addEventListener("change", async function() {
+        if (this.files && this.files[0]) {
+            if (this.files[0].size > 5*1024*1024) {alert("File can not be larger than 5MB"); this.value = ""; return}
+            image = {
+                name: this.files[0].name,
+                picture: await encodeFile(this.files[0]),
+                type: this.files[0].type
+            }
+            image_input.textContent = "✅"; image_input.style.backgroundColor = "#C0C0C0"; image_input.style.cursor = "default"
+        } // ✓ ✔ ✅
+    });
+    send_message.onclick = () => {
+        if (!text_input.value.trim() && !image.picture) {return};
+
+        if (image.picture) {attachment_limit = 0; setTimeout(() => {attachment_limit = 1; image_input.style.cursor = "pointer"}, 30000)};
+        let message = {text: text_input.value, image: image, ID: SESSION_ID};
+        SERVER.send(JSON.stringify(message)); text_input.value = ""; attachment.value = ""; image = {name: "", picture: "", type: ""};
+
+        text_input.value.length = 0; image_input.textContent = "🖼";
+        send_message.style.cursor = "default"; send_message.style.opacity = "0.5"; setTimeout(() => {send_message.style.cursor = "pointer"; send_message.style.opacity = "1";}, 1000);
     };
 
+    function encodeFile(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file); 
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
     SERVER.onmessage = (event) => {
-        updated_messages = JSON.parse(event.data)
-        if (updated_messages[updated_messages.length-1].ID !== SESSION_ID) {
-            if (messages.length >= 1) {if (updated_messages[updated_messages.length-1].message !== messages[messages.length-1].message) {NOTIFICATION_AUDIO.play().catch(() => console.log("Audio blocked: Notification failed"))}}
-            else {NOTIFICATION_AUDIO.play().catch(() => console.log("Audio blocked: Notification failed"))}
-        }
-        messages = updated_messages
+        updates = JSON.parse(event.data)
+        old_messages = updates["old"]; new_messages = updates["new"]
+        if (messages.length === 0) {messages.push(...old_messages, ...new_messages); render_messages(messages); return}
+        new_messages.forEach(message => {if (message.ID !== SESSION_ID) {NOTIFICATION_AUDIO.play().catch(() => console.log("Notification failed: Audio blocked")); return}})
+        old_messages.forEach(old_message => {let old_message_index = messages.findIndex(message => message.text === old_message.text && message.ID === old_message.ID); if (old_message_index !== -1) {messages.splice(old_message_index, 1)}})
+        messages.push(...new_messages)
         render_messages(messages)
     };
-    function render_messages(messages) { 
+    function render_messages(messages) {
         const messages_container = document.getElementById("messages");
         messages_container.innerHTML = '';
         messages.forEach(message => {
             let message_div = document.createElement("div");
-            message_div.className = (message.ID === SESSION_ID) ? "message-yours" : "message-others"; message_div.textContent = message.message;
+            message_div.className = (message.ID === SESSION_ID) ? "message-yours" : "message-others"; message_div.textContent = message.text;
             messages_container.appendChild(message_div)
-        } )
+            if (message.image && message.image.picture) {
+                let image_img = document.createElement("img");
+                image_img.src = message.image.picture;
+                message_div.appendChild(image_img)
+            }
+        })
+        window.scrollTo(0, document.body.scrollHeight);
     }
-    // messages = [{"message": "Hello!", "ID": 12, "life": 5}, {"message": "Is any one online rn?", "ID": 12, "life": 5}, {"message": "yea", "ID": SESSION_ID, "life": 5}, {"message": "bol", "ID": SESSION_ID, "life": 5}, {"message": "''This is a super long sentence just intended to take some space''", "ID": 12, "life": 5}, {"message": "Bhai this message will be an even longer message than before, as it has more to discuss about -- such as: This message itself, how it refers to itself, meta-meta-meta, your message, and so much more (etcetera)", "ID": SESSION_ID, "life": 5}, {"message": "Nice", "ID": 12, "life": 5}, {"message": "Nic", "ID": 12, "life": 5}, {"message": "thxu", "ID": SESSION_ID, "life": 5}, {"message": "bkl", "ID": SESSION_ID, "life": 5}, {"message": "Hello!", "ID": 12, "life": 5}, {"message": "Is any one online rn?", "ID": 12, "life": 5}, {"message": "yea", "ID": SESSION_ID, "life": 5}, {"message": "bol", "ID": SESSION_ID, "life": 5}, {"message": "''This is a super long sentence just intended to take some space''", "ID": 12, "life": 5}, {"message": "Bhai this message will be an even longer message than before, as it has more to discuss about -- such as: This message itself, how it refers to itself, meta-meta-meta, your message, and so much more (etcetera)", "ID": SESSION_ID, "life": 5}, {"message": "Nice", "ID": 12, "life": 5}, {"message": "Nic", "ID": 12, "life": 5}, {"message": "thxu", "ID": SESSION_ID, "life": 5}, {"message": "bkl", "ID": SESSION_ID, "life": 5}]
-    // render_messages(messages)
+    messages = [{"text": "Hello!", "image": "", "ID": 12, "life": 5}, {"text": "Is any one online rn?", "image": "", "ID": 12, "life": 5}, {"text": "yea", "image": "", "ID": SESSION_ID, "life": 5}, {"text": "bol", "image": "", "ID": SESSION_ID, "life": 5}, {"text": "''This is a super long sentence just intended to take some space''", "image": "", "ID": 12, "life": 5}, {"text": "Bhai this message will be an even longer message than before, as it has more to discuss about -- such as: This message itself, how it refers to itself, meta-meta-meta, your message, and so much more (etcetera)", "image": "", "ID": SESSION_ID, "life": 5}, {"text": "Nice", "image": "", "ID": 12, "life": 5}, {"text": "Nic", "image": "", "ID": 12, "life": 5}, {"text": "thxu", "image": "", "ID": SESSION_ID, "life": 5}, {"text": "bkl", "image": "", "ID": SESSION_ID, "life": 5}, {"text": "Hello!", "image": "", "ID": 12, "life": 5}, {"text": "Is any one online rn?", "image": "", "ID": 12, "life": 5}, {"text": "yea", "image": "", "ID": SESSION_ID, "life": 5}, {"text": "bol", "image": "", "ID": SESSION_ID, "life": 5}, {"text": "''This is a super long sentence just intended to take some space''", "image": "", "ID": 12, "life": 5}, {"text": "Bhai this message will be an even longer message than before, as it has more to discuss about -- such as: This message itself, how it refers to itself, meta-meta-meta, your message, and so much more (etcetera)", "image": "", "ID": SESSION_ID, "life": 5}, {"text": "Nice", "image": "", "ID": 12, "life": 5}, {"text": "Nic", "image": "", "ID": 12, "life": 5}, {"text": "thxu", "image": "", "ID": SESSION_ID, "life": 5}, {"text": "bkl", "image": "", "ID": SESSION_ID, "life": 5}, {"text": "agar itna lamba message ho fir kya?", "image": "", "ID": 12, "life": 5}, {"text": "agar itna lamba message ho fir kya?", "image": "", "ID": SESSION_ID, "life": 5}]
+    render_messages(messages)
 </script>
 
 </html>
