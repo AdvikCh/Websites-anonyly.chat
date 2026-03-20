@@ -10,7 +10,7 @@ async def reciever(request, nursery):
     request_headers = dict(request.headers); request_headers = {key.decode("utf-8").lower():value.decode("utf-8").lower() for key, value in request_headers.items()}; cookie = request_headers.get("cookie", "")
     if request_headers.get("origin", "").rstrip("/").rstrip("/anonyly-chat") != "https://projects.advikchaudhary.com": await request.reject(403); return
     if not cookie:
-        ID = random.randint(1, 100_000_000); cookie = (b"Set-Cookie", f"ID={ID}; Path=/; Max-Age=86400; HttpOnly; SameSite=Strict".encode()); users[ID] = [1]
+        ID = random.randint(1, 100_000_000); cookie = (b"Set-Cookie", f"ID={ID}; Path=/; Max-Age=86400; HttpOnly; SameSite=None; Secure".encode()); users[ID] = [1]
         web_socket = await request.accept(extra_headers=[cookie])
     else:
         try:
@@ -18,7 +18,7 @@ async def reciever(request, nursery):
             if ID not in users: raise ValueError
             web_socket = await request.accept()
         except (ValueError, IndexError):
-            ID = random.randint(1, 100_000_000); cookie = (b"Set-Cookie", f"ID={ID}; Path=/; Max-Age=86400; HttpOnly; SameSite=Strict".encode()); users[ID] = [1]
+            ID = random.randint(1, 100_000_000); cookie = (b"Set-Cookie", f"ID={ID}; Path=/; Max-Age=86400; HttpOnly; SameSite=None; Secure".encode()); users[ID] = [1]
             web_socket = await request.accept(extra_headers=[cookie])
     clients.add(web_socket); await web_socket.send_message(str(ID)); await web_socket.send_message(json.dumps({"old": [], "new": messages}))
     try:
