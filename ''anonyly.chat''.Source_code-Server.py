@@ -8,22 +8,22 @@ print("variables defined", flush=True)
 
 async def allow_attachment(user): await trio.sleep(30); users[user][0] = 1; print(f"allowed attachment for {user}", flush=True)
 async def reciever(request, nursery):
-    request_headers = dict(request.headers); request_headers = {key.decode("utf-8").lower():value.decode("utf-8").lower() for key, value in request_headers.items()}; cookie = request_headers.get("cookie", ""); print(f"raw cookie: {cookie}", flush=True)
+    request_headers = dict(request.headers); request_headers = {key.decode("utf-8").lower():value.decode("utf-8").lower() for key, value in request_headers.items()}; cookie = request_headers.get("cookie", "").lower(); print(f"raw cookie: {cookie}", flush=True)
     if request_headers.get("origin", "").rstrip("/").rstrip("/anonyly-chat") != "https://projects.advikchaudhary.com": await request.reject(403); print("rejected alien", flush=True); return
     if not cookie:
         print("raw cookie is blank -- no cookie. Creating cookie and sending it back", flush=True)
-        ID = random.randint(1, 100_000_000); cookie = (b"Set-Cookie", f"ID={ID}; Path=/; Max-Age=86400; HttpOnly; SameSite=None; Secure".encode()); users[ID] = [1]; print("ID registered", flush=True)
+        ID = random.randint(1, 100_000_000); cookie = (b"Set-Cookie", f"ID={ID}; Path=/; Max-Age=86400; HttpOnly; SameSite=None; Secure".encode()); users[ID] = [1]; print("ID registered", flush=True); print(users, flush=True)
         web_socket = await request.accept(extra_headers=[cookie]); print("connection formed", flush=True)
     else:
         print("raw cookie has some thing", flush=True)
         try:
-            ID = int(cookie.split("ID=")[1].split(";")[0])
+            ID = int(cookie.split("id=")[1].split(";")[0])
             print("ID valid", flush=True)
             if ID not in users: print("ID incorrect", flush=True); raise ValueError
             web_socket = await request.accept(); print("connection formed", flush=True)
         except (ValueError, IndexError):
             print("ID invalid or incorrect. Creating cookie and sending it back", flush=True)
-            ID = random.randint(1, 100_000_000); cookie = (b"Set-Cookie", f"ID={ID}; Path=/; Max-Age=86400; HttpOnly; SameSite=None; Secure".encode()); users[ID] = [1]; print("ID registered", flush=True)
+            ID = random.randint(1, 100_000_000); cookie = (b"Set-Cookie", f"ID={ID}; Path=/; Max-Age=86400; HttpOnly; SameSite=None; Secure".encode()); users[ID] = [1]; print("ID registered", flush=True); print(users, flush=True)
             web_socket = await request.accept(extra_headers=[cookie]); print("connection formed", flush=True)
     clients.add(web_socket); await web_socket.send_message(str(ID)); await web_socket.send_message(json.dumps({"old": [], "new": messages})); print("web_socket registered, updated with ID & messages", flush=True)
     try:
