@@ -119,7 +119,10 @@
                 max-width: 60vw; border-radius: 2vw;
                 font-size: 1.5em; text-align: right;
                 padding: 1vw; margin: 1vw 1vw 0 0; align-self: flex-end
-              }
+              } .message-others img, .message-yours img {
+                  display: block; border-radius: 1vw;
+                  width: 58vw; height: auto;
+                }
 
             .message {
                 display: flex; position: fixed; background: linear-gradient(to right, #FF6666, #FF4444);
@@ -175,7 +178,7 @@
 </main>
 </body>
 <script>
-    const SESSION_ID = Math.floor(Math.random() * 100000);
+    var ID = null;
     const SERVER = new WebSocket("wss://websites-anonyly-chat.onrender.com");
     const NOTIFICATION_AUDIO = new Audio("Assets/Notification.mp3");
     var attachment_limit = 1;
@@ -197,14 +200,14 @@
                 picture: await encodeFile(this.files[0]),
                 type: this.files[0].type
             }
-            image_input.textContent = "✅"; image_input.style.backgroundColor = "#C0C0C0"; image_input.style.cursor = "default"
-        } // ✓ ✔ ✅
+            image_input.textContent = "✓"; image_input.style.opacity = 0.5; image_input.style.cursor = "default"
+        }
     });
     send_message.onclick = () => {
         if (!text_input.value.trim() && !image.picture) {return};
 
-        if (image.picture) {attachment_limit = 0; setTimeout(() => {attachment_limit = 1; image_input.style.cursor = "pointer"}, 30000)};
-        let message = {text: text_input.value, image: image, ID: SESSION_ID};
+        if (image.picture) {attachment_limit = 0; setTimeout(() => {attachment_limit = 1; image_input.style.opacity = 1; image_input.style.cursor = "pointer"}, 30000)};
+        let message = {text: text_input.value, image: image};
         SERVER.send(JSON.stringify(message)); text_input.value = ""; attachment.value = ""; image = {name: "", picture: "", type: ""};
 
         text_input.value.length = 0; image_input.textContent = "🖼";
@@ -220,10 +223,11 @@
         });
     }
     SERVER.onmessage = (event) => {
+        if (ID === null) {ID = event.data; return}
         updates = JSON.parse(event.data)
         old_messages = updates["old"]; new_messages = updates["new"]
         if (messages.length === 0) {messages.push(...old_messages, ...new_messages); render_messages(messages); return}
-        new_messages.forEach(message => {if (message.ID !== SESSION_ID) {NOTIFICATION_AUDIO.play().catch(() => console.log("Notification failed: Audio blocked")); return}})
+        new_messages.forEach(message => {if (message.ID != ID) {NOTIFICATION_AUDIO.play().catch(() => console.log("Notification failed: Audio blocked")); return}})
         old_messages.forEach(old_message => {let old_message_index = messages.findIndex(message => message.text === old_message.text && message.ID === old_message.ID); if (old_message_index !== -1) {messages.splice(old_message_index, 1)}})
         messages.push(...new_messages)
         render_messages(messages)
@@ -233,18 +237,15 @@
         messages_container.innerHTML = '';
         messages.forEach(message => {
             let message_div = document.createElement("div");
-            message_div.className = (message.ID === SESSION_ID) ? "message-yours" : "message-others"; message_div.textContent = message.text;
-            messages_container.appendChild(message_div)
+            message_div.className = (message.ID == ID) ? "message-yours" : "message-others"; message_div.textContent = message.text;
             if (message.image && message.image.picture) {
                 let image_img = document.createElement("img");
                 image_img.src = message.image.picture;
                 message_div.appendChild(image_img)
             }
+            messages_container.appendChild(message_div)
         })
-        window.scrollTo(0, document.body.scrollHeight);
     }
-    messages = [{"text": "Hello!", "image": "", "ID": 12, "life": 5}, {"text": "Is any one online rn?", "image": "", "ID": 12, "life": 5}, {"text": "yea", "image": "", "ID": SESSION_ID, "life": 5}, {"text": "bol", "image": "", "ID": SESSION_ID, "life": 5}, {"text": "''This is a super long sentence just intended to take some space''", "image": "", "ID": 12, "life": 5}, {"text": "Bhai this message will be an even longer message than before, as it has more to discuss about -- such as: This message itself, how it refers to itself, meta-meta-meta, your message, and so much more (etcetera)", "image": "", "ID": SESSION_ID, "life": 5}, {"text": "Nice", "image": "", "ID": 12, "life": 5}, {"text": "Nic", "image": "", "ID": 12, "life": 5}, {"text": "thxu", "image": "", "ID": SESSION_ID, "life": 5}, {"text": "bkl", "image": "", "ID": SESSION_ID, "life": 5}, {"text": "Hello!", "image": "", "ID": 12, "life": 5}, {"text": "Is any one online rn?", "image": "", "ID": 12, "life": 5}, {"text": "yea", "image": "", "ID": SESSION_ID, "life": 5}, {"text": "bol", "image": "", "ID": SESSION_ID, "life": 5}, {"text": "''This is a super long sentence just intended to take some space''", "image": "", "ID": 12, "life": 5}, {"text": "Bhai this message will be an even longer message than before, as it has more to discuss about -- such as: This message itself, how it refers to itself, meta-meta-meta, your message, and so much more (etcetera)", "image": "", "ID": SESSION_ID, "life": 5}, {"text": "Nice", "image": "", "ID": 12, "life": 5}, {"text": "Nic", "image": "", "ID": 12, "life": 5}, {"text": "thxu", "image": "", "ID": SESSION_ID, "life": 5}, {"text": "bkl", "image": "", "ID": SESSION_ID, "life": 5}, {"text": "agar itna lamba message ho fir kya?", "image": "", "ID": 12, "life": 5}, {"text": "agar itna lamba message ho fir kya?", "image": "", "ID": SESSION_ID, "life": 5}]
-    render_messages(messages)
 </script>
 
 </html>
